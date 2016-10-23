@@ -3,11 +3,17 @@
  */
 //рабочий вариант
 
-var table = document.getElementById('products');
-table.addEventListener('click', toCart);
+var productsElement = document.getElementById('products');
+var cart = [];
+var cartElement = document.getElementById('cart');
+var cartCostElement = document.getElementById('cartCost');
+
+productsElement.addEventListener('click', toCart);
+cartElement.addEventListener('click', toCart);
+
 var products = JSON.parse(getRest('shop', 'product')); //server answer
 var recipes = JSON.parse(getRest('recipes', 'dish'));
-var div = document.getElementById('111');
+var divv = document.getElementById('111');
 
 putInTable(products);
 
@@ -33,12 +39,12 @@ function putInTable(items) {
 
         btn.className = 'btn btn-default';
         btn.type = 'button';
-        btn.value = 'action';
+        btn.value = 'В корзину';
         btn.id = items[i].id;
         td1.innerHTML = items[i].name;
         td2.innerHTML = items[i].cost;
 
-        table.appendChild(tr);
+        productsElement.appendChild(tr);
         tr.appendChild(td1);
         tr.appendChild(td2);
         tr.appendChild(td3);
@@ -47,17 +53,35 @@ function putInTable(items) {
 }
 
 function toCart(event) {
+    var id = event.target.id;
     if (event.target.tagName === 'INPUT') {
-        var id = event.target.id;
         for (var i = 0; i < products.valueOf().length; i++) {
             if (products[i].id == id ) {
-                var div = document.getElementById('cart');
-                var span = document.createElement('span');
-                span.innerHTML = products[i].name;
-                div.appendChild(span);
-
+                cart.push(products[i]);
             }
         }
     }
+    if (event.target.tagName === 'SPAN') {
+        for (var j = 0; j < cart.length; j++) {
+            if (cart[j].id == id) {
+                cart.splice(j, 1);
+                break;
+            }
+        }
+    }
+    cartRender();
+}
 
+function cartRender () {
+    cartElement.innerHTML = 'Корзина </br>';
+    cartCostElement.innerHTML = '';
+    var cost = 0;
+    for (var i = 0; i < cart.length; i++) {
+        var span = document.createElement('span');
+        span.id = cart[i].id;
+        span.innerHTML = span.innerHTML + cart[i].name + '</br>';
+        cartElement.appendChild(span);
+        cost += +cart[i].cost;
+        cartCostElement.innerHTML = 'Цена </br>' + cost;
+    }
 }
