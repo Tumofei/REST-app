@@ -1,22 +1,23 @@
 /**
  * Created by Борис on 21.10.2016.
  */
-//рабочий вариант
 
 var productsElement = document.getElementById('products');
 var cart = [];
 var cartElement = document.getElementById('cart');
 var cartCostElement = document.getElementById('cartCost');
+var cartRecipes = [];
+var recipesElement = document.getElementById('recipes');
 
 productsElement.addEventListener('click', toCart);
 cartElement.addEventListener('click', toCart);
 
 var products = JSON.parse(getRest('shop', 'product')); //server answer
 var recipes = JSON.parse(getRest('recipes', 'dish'));
-var divv = document.getElementById('111');
 
 putInTable(products);
 
+//recipesElement.innerHTML = recipes[0].ingridients + ' = ' + recipes[0].name;
 //alert(xhr.status + ': ' + xhr.statusText); //server status
 
 function getRest(server, table) {
@@ -70,6 +71,7 @@ function toCart(event) {
         }
     }
     cartRender();
+    recipeRender();
 }
 
 function cartRender () {
@@ -83,5 +85,36 @@ function cartRender () {
         cartElement.appendChild(span);
         cost += +cart[i].cost;
         cartCostElement.innerHTML = 'Цена </br>' + cost;
+    }
+}
+
+function recipeRender () {
+    findRecipes();
+
+    recipesElement.innerHTML = 'Рецепты блюд:</br>';
+    for (var i = 0; i < cartRecipes.length; i++) {
+        var span = document.createElement('span');
+        var ingridients = cartRecipes[i].ingridients.split(', ');
+        //ingridients.join(' + ');
+        span.innerHTML = ingridients.join(' + ') + ' = ' + cartRecipes[i].name + '</br>';
+        recipesElement.appendChild(span);
+    }
+}
+
+function findRecipes () {
+    cartRecipes = [];
+    for (var i = 0; i < recipes.valueOf().length; i++) {
+        var ingridients = recipes[i].ingridients.split(', ');
+        var count = 0;
+        for (var j = 0; j < cart.length; j++){
+            var index = ingridients.indexOf(cart[j].name);
+            if (index >= 0) {
+                ingridients.splice(index, 1);
+                count++
+            }
+        }
+        if (ingridients == 0) {
+            cartRecipes.push(recipes[i]);
+        }
     }
 }
