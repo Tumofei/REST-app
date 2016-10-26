@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `Dish` (
 INSERT INTO `Dish` (`id`, `name`, `ingridients`) VALUES
 	(1, 'Хлеб', 'Мука, Яйца'),
 	(2, 'Макароны по флотски', 'Макароны, Тушенка'),
-	(3, 'Фаршированная курица', 'Курица, Хлеб');
+	(3, 'Фарш', 'Курица, Хлеб');
 /*!40000 ALTER TABLE `Dish` ENABLE KEYS */;
 
 
@@ -44,13 +44,14 @@ CREATE TABLE IF NOT EXISTS `Restouranes` (
   `description` varchar(50) DEFAULT NULL,
   `price_category` enum('small','medium','big') DEFAULT NULL,
   `adress` varchar(50) DEFAULT NULL,
+  `necessary_dish` VARCHAR(50) NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- Дамп данных таблицы Restouranes.Restouranes: ~3 rows (приблизительно)
 /*!40000 ALTER TABLE `Restouranes` DISABLE KEYS */;
 INSERT INTO `Restouranes` (`id`, `name`, `description`, `price_category`, `adress`) VALUES
-	(1, 'Куракума', 'Китайская кухня', 'medium', 'ул. Китайская 124'),
+	(1, 'Куракума', 'Китайская кухня', 'medium', 'ул. Китайская 124', 'Хлеб,Фарш'),
 	(2, 'Пельмень', 'Российские национальные блюда', 'small', 'ул. Российская 1'),
 	(3, 'Rest++', 'Дорого, бохато', 'big', 'ул. Арбат');
 /*!40000 ALTER TABLE `Restouranes` ENABLE KEYS */;

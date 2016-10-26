@@ -15,6 +15,7 @@ cartElement.addEventListener('click', toCart);*/
 
 var restaurants = JSON.parse(getRest('restouranes', 'Restouranes')); //server answer
 var dishes = JSON.parse(getRest('recipes', 'dish'));
+var products = JSON.parse(getRest('shop', 'product'));
 
 putInTable(restaurants);
 
@@ -37,18 +38,20 @@ function putInTable(items) {
         var td3 = document.createElement('td');
         var td4 = document.createElement('td');
         var td5 = document.createElement('td');
+        var td6 = document.createElement('td');
         var tr = document.createElement('tr');
         var btn = document.createElement('input');
 
         btn.className = 'btn btn-default';
         btn.type = 'button';
-        btn.value = 'Посмотреть рецепты';
-        btn.id = items[i].id;
+        btn.value = 'Посмотреть цену';
+        btn.id = items[i].necessary_dish;
         btn.addEventListener('click', showDish);
         td1.innerHTML = items[i].name;
         td2.innerHTML = items[i].description;
         td3.innerHTML = items[i].price_category;
         td4.innerHTML = items[i].adress;
+        td5.innerHTML = items[i].necessary_dish;
 
         restaurantsItem.appendChild(tr);
         tr.appendChild(td1);
@@ -56,12 +59,24 @@ function putInTable(items) {
         tr.appendChild(td3);
         tr.appendChild(td4);
         tr.appendChild(td5);
-        td5.appendChild(btn);
+        tr.appendChild(td6);
+        td6.appendChild(btn);
     }
 }
 
 function showDish() {
-    console.log('ok baby');
+    var necessary_products = event.target.id.split(',');
+    for (var a = 0; a<necessary_products.length; a++){
+        var count = 0;
+        for (var i =0; i<dishes.valueOf().length; i++){
+            var index = dishes[i].name.indexOf(necessary_products[a]);
+            if (index >= 0) {
+                console.log(dishes[i].ingridients);
+                count++
+            }
+        }
+    }
+    /**/
 }
 /*function toCart(event) {
     var id = event.target.id;

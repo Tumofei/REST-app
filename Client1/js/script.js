@@ -32,13 +32,13 @@ function getRest(server, table) {
 
 function putInTable(items) {
     for (var i = 0; i < items.valueOf().length; i++) {
+        var tr = document.createElement('tr');
         var td1 = document.createElement('td');
         var td2 = document.createElement('td');
         var td3 = document.createElement('td');
-        var tr = document.createElement('tr');
         var btn = document.createElement('input');
 
-        btn.className = 'btn btn-default';
+        btn.className = 'btn btn-success';
         btn.type = 'button';
         btn.value = 'В корзину';
         btn.id = items[i].id;
@@ -75,23 +75,24 @@ function toCart(event) {
 }
 
 function cartRender () {
-    cartElement.innerHTML = 'Корзина </br>';
+    cartElement.innerHTML = 'Список добавленных продуктов: </br>';
     cartCostElement.innerHTML = '';
     var cost = 0;
     for (var i = 0; i < cart.length; i++) {
         var span = document.createElement('span');
         span.id = cart[i].id;
-        span.innerHTML = span.innerHTML + cart[i].name + '</br>';
+        span.className = 'text-info';
+        span.innerHTML = span.innerHTML + cart[i].name + ';'+'</br>';
         cartElement.appendChild(span);
         cost += +cart[i].cost;
-        cartCostElement.innerHTML = 'Цена </br>' + cost;
+        cartCostElement.innerHTML = 'Сумма к оплате: ' + cost + '$';
     }
 }
 
 function recipeRender () {
     findRecipes();
 
-    recipesElement.innerHTML = 'Рецепты блюд:</br>';
+    recipesElement.innerHTML = 'Найденные рецепты блюд: </br>';
     for (var i = 0; i < cartRecipes.length; i++) {
         var span = document.createElement('span');
         var ingridients = cartRecipes[i].ingridients.split(', ');
