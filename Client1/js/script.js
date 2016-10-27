@@ -11,9 +11,14 @@ var cartElement = document.getElementById('cart');
 var cartCostElement = document.getElementById('cartCost');
 var cartRecipes = [];
 var recipesElement = document.getElementById('recipes');
+var addBtn = document.getElementById('addBtn');
+var addName = document.getElementById('addName');
+var addCost = document.getElementById('addCost');
+var data = {};
 
 productsElement.addEventListener('click', actionChooser);
 cartElement.addEventListener('click', actionChooser);
+addBtn.addEventListener('click', actionChooser);
 
 var products = JSON.parse(getRest(shopServer, shopTable)); //server answer
 var recipes = JSON.parse(getRest('recipes', 'dish'));
@@ -40,8 +45,9 @@ function postRest(server, table, data) {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
     xhr.open('POST', 'http://rest/' + server + '/index.php/' + table, false);
-    xhr.data = data; //{"id":9, "name":"Ananas", "cost":"10"}
-    xhr.send();
+    //data = JSON.stringify({"id":9, "name":"Ananas", "cost":"10"});
+    xhr.data = data;
+    xhr.send(data);
 }
 
 function putRest(server, table, data, id) {
@@ -112,6 +118,21 @@ function actionChooser(event) {
     //delete
     if (event.target.className.indexOf('deleteBtn') + 1) {
         deleteRest(shopServer, shopTable, id);
+        tableRender();
+    }
+    //edit
+    if (event.target.className.indexOf('editBtn') + 1) {
+        putRest(shopServer, shopTable, null, null);
+        tableRender();
+    }
+    //add
+    if (event.target.className.indexOf('addBtn') + 1) {
+        data = {
+            name: addName,
+            cost: addCost
+        };
+        postRest(shopServer, shopTable, data);
+        data = {};
         tableRender();
     }
 
