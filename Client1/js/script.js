@@ -2,6 +2,9 @@
  * Created by Борис on 21.10.2016.
  */
 
+var shopServer = 'shop';
+var shopTable = 'product';
+
 var productsElement = document.getElementById('products');
 var cart = [];
 var cartElement = document.getElementById('cart');
@@ -9,10 +12,10 @@ var cartCostElement = document.getElementById('cartCost');
 var cartRecipes = [];
 var recipesElement = document.getElementById('recipes');
 
-productsElement.addEventListener('click', toCart);
-cartElement.addEventListener('click', toCart);
+productsElement.addEventListener('click', actionChooser);
+cartElement.addEventListener('click', actionChooser);
 
-var products = JSON.parse(getRest('shop', 'product')); //server answer
+var products = JSON.parse(getRest(shopServer, shopTable)); //server answer
 var recipes = JSON.parse(getRest('recipes', 'dish'));
 
 putInTable(products);
@@ -26,18 +29,54 @@ function getRest(server, table) {
     return xhr.responseText;
 }
 
+function deleteRest(server, table, id) {
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.open('DELETE', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
+    xhr.send();
+}
+
+function postRest(server, table, data) {
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.open('POST', 'http://rest/' + server + '/index.php/' + table, false);
+    xhr.data = data; //{"id":9, "name":"Ananas", "cost":"10"}
+    xhr.send();
+}
+
+function putRest(server, table, data, id) {
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.open('PUT', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
+    xhr.data = data;
+    xhr.send();
+}
+
 function putInTable(items) {
     for (var i = 0; i < items.valueOf().length; i++) {
         var tr = document.createElement('tr');
         var td1 = document.createElement('td');
         var td2 = document.createElement('td');
         var td3 = document.createElement('td');
-        var btn = document.createElement('input');
+        var addToCartBtn = document.createElement('input');
+        var deleteBtn = document.createElement('input');
+        var editBtn = document.createElement('input');
 
-        btn.className = 'btn btn-success';
-        btn.type = 'button';
-        btn.value = 'В корзину';
-        btn.id = items[i].id;
+        addToCartBtn.className = 'btn btn-success col-lg-3 cartBtn';
+        addToCartBtn.type = 'button';
+        addToCartBtn.value = 'В корзину';
+        addToCartBtn.id = items[i].id;
+
+        deleteBtn.className = 'btn btn-danger col-lg-3 col-lg-offset-1 deleteBtn';
+        deleteBtn.type = 'button';
+        deleteBtn.value = 'Delete';
+        deleteBtn.id = items[i].id;
+
+        editBtn.className = 'btn btn-danger col-lg-3 col-lg-offset-1 editBtn';
+        editBtn.type = 'button';
+        editBtn.value = 'Edit';
+        editBtn.id = items[i].id;
+
         td1.innerHTML = items[i].name;
         td2.innerHTML = items[i].cost;
 
@@ -45,19 +84,23 @@ function putInTable(items) {
         tr.appendChild(td1);
         tr.appendChild(td2);
         tr.appendChild(td3);
-        td3.appendChild(btn);
+        td3.appendChild(addToCartBtn);
+        td3.appendChild(editBtn);
+        td3.appendChild(deleteBtn);
     }
 }
 
-function toCart(event) {
+function actionChooser(event) {
     var id = event.target.id;
-    if (event.target.tagName === 'INPUT') {
+    //toCart
+    if (event.target.className.indexOf('cartBtn') + 1) {
         for (var i = 0; i < products.valueOf().length; i++) {
             if (products[i].id == id ) {
                 cart.push(products[i]);
             }
         }
     }
+    //outCart
     if (event.target.tagName === 'SPAN') {
         for (var j = 0; j < cart.length; j++) {
             if (cart[j].id == id) {
@@ -66,6 +109,12 @@ function toCart(event) {
             }
         }
     }
+    //delete
+    if (event.target.className.indexOf('deleteBtn') + 1) {
+        deleteRest(shopServer, shopTable, id);
+        tableRender();
+    }
+
     cartRender();
     recipeRender();
 }
@@ -96,6 +145,12 @@ function recipeRender () {
         span.innerHTML = '</br>' + ingridients.join(' + ') + ' = ' + cartRecipes[i].name + '</br>';
         recipesElement.appendChild(span);
     }
+}
+
+function tableRender () {
+    products = JSON.parse(getRest(shopServer, shopTable)); //server answer
+    productsElement.innerHTML = '';
+    putInTable(products);
 }
 
 function findRecipes () {
