@@ -4,6 +4,7 @@
 
 
 var restaurantsItem = document.getElementById('restaurants');
+
 /*var cart = [];
 var cartElement = document.getElementById('cart');
 var cartCostElement = document.getElementById('cartCost');
@@ -64,20 +65,38 @@ function putInTable(items) {
     }
 }
 
+var necessary_products = [];
 function showDish() {
-    var necessary_products = event.target.id.split(',');
-    for (var a = 0; a<necessary_products.length; a++){
+    var necessary_dishes = event.target.id.split(',');
+    for (var a = 0; a<necessary_dishes.length; a++){
         var count = 0;
         for (var i =0; i<dishes.valueOf().length; i++){
-            var index = dishes[i].name.indexOf(necessary_products[a]);
+            var index = dishes[i].name.indexOf(necessary_dishes[a]);
             if (index >= 0) {
-                console.log(dishes[i].ingridients);
+                necessary_products.push(dishes[i].ingridients.split(', '));
                 count++
             }
         }
     }
-    /**/
+    console.log(necessary_products);
+    showProducts();
 }
+
+function showProducts() {
+    for (var i =0; i<products.length; i++) {
+        for (var a = 0; a<necessary_products.length; a++){
+            var index = necessary_products[i].indexOf(products[i]);
+            if (index >= 0) {
+                console.log(products[i].cost);
+            }
+        }
+    }
+}
+
+
+
+
+
 /*function toCart(event) {
     var id = event.target.id;
     if (event.target.tagName === 'INPUT') {
