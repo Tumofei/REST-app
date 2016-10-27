@@ -45,9 +45,7 @@ function postRest(server, table, data) {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
     xhr.open('POST', 'http://rest/' + server + '/index.php/' + table, false);
-    //data = JSON.stringify({"id":9, "name":"Ananas", "cost":"10"});
-    xhr.data = data;
-    xhr.send(data);
+    xhr.send(JSON.stringify(data));
 }
 
 function putRest(server, table, data, id) {
@@ -128,8 +126,8 @@ function actionChooser(event) {
     //add
     if (event.target.className.indexOf('addBtn') + 1) {
         data = {
-            name: addName,
-            cost: addCost
+            name: addName.value,
+            cost: addCost.value
         };
         postRest(shopServer, shopTable, data);
         data = {};
