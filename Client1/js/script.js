@@ -17,14 +17,10 @@ var recipes = JSON.parse(getRest('recipes', 'dish'));
 
 putInTable(products);
 
-//recipesElement.innerHTML = recipes[0].ingridients + ' = ' + recipes[0].name;
-//alert(xhr.status + ': ' + xhr.statusText); //server status
-
 function getRest(server, table) {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
     xhr.open('GET', 'http://rest/' + server + '/index.php/' + table, false);
-    //data = '{"name": "Anandsaas", "cost": "7"}';
     xhr.send();
 
     return xhr.responseText;
@@ -97,7 +93,7 @@ function recipeRender () {
         var span = document.createElement('span');
         var ingridients = cartRecipes[i].ingridients.split(', ');
         //ingridients.join(' + ');
-        span.innerHTML = ingridients.join(' + ') + ' = ' + cartRecipes[i].name + '</br>';
+        span.innerHTML = '</br>' + ingridients.join(' + ') + ' = ' + cartRecipes[i].name + '</br>';
         recipesElement.appendChild(span);
     }
 }
@@ -106,12 +102,10 @@ function findRecipes () {
     cartRecipes = [];
     for (var i = 0; i < recipes.valueOf().length; i++) {
         var ingridients = recipes[i].ingridients.split(', ');
-        var count = 0;
         for (var j = 0; j < cart.length; j++){
             var index = ingridients.indexOf(cart[j].name);
             if (index >= 0) {
                 ingridients.splice(index, 1);
-                count++
             }
         }
         if (ingridients == 0) {
