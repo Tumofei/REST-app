@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Хост:                         127.0.0.1
--- Версия сервера:               5.5.45 - MySQL Community Server (GPL)
+-- Версия сервера:               5.5.41-log - MySQL Community Server (GPL)
 -- ОС Сервера:                   Win32
--- HeidiSQL Версия:              9.3.0.4984
+-- HeidiSQL Версия:              9.1.0.4867
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,24 +15,40 @@ CREATE DATABASE IF NOT EXISTS `recipes` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `recipes`;
 
 
--- Дамп структуры для таблица recipes.Dish
-CREATE TABLE IF NOT EXISTS `Dish` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+-- Дамп структуры для таблица recipes.Recipes
+CREATE TABLE IF NOT EXISTS `Recipes` (
+  `id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
-  `ingridients` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы recipes.Dish: ~6 rows (приблизительно)
-/*!40000 ALTER TABLE `Dish` DISABLE KEYS */;
-INSERT INTO `Dish` (`id`, `name`, `ingridients`) VALUES
-	(1, 'Bread', 'Eggs, Flour'),
-	(2, 'Americano', 'Coffee, Water, Sugar'),
-	(3, 'Good Chicken', 'Chicken, Bread'),
-	(4, 'Cake', 'Eggs, Flour, Milk'),
-	(5, 'Espresso', 'Coffee, Sugar'),
-	(6, 'Super Chicken', 'Chicken, Ananas');
-/*!40000 ALTER TABLE `Dish` ENABLE KEYS */;
+-- Дамп данных таблицы recipes.Recipes: ~6 rows (приблизительно)
+/*!40000 ALTER TABLE `Recipes` DISABLE KEYS */;
+INSERT INTO `Recipes` (`id`, `name`) VALUES
+	(1, 'Breads'),
+	(3, 'Good Chicken'),
+	(4, 'Cake'),
+	(5, 'Espresso'),
+	(6, 'Super Chicken'),
+	(44, '44545');
+/*!40000 ALTER TABLE `Recipes` ENABLE KEYS */;
+
+
+-- Дамп структуры для таблица recipes.Recipes_ingr
+CREATE TABLE IF NOT EXISTS `Recipes_ingr` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_recipe` int(11) DEFAULT NULL,
+  `id_product` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы recipes.Recipes_ingr: ~0 rows (приблизительно)
+/*!40000 ALTER TABLE `Recipes_ingr` DISABLE KEYS */;
+INSERT INTO `Recipes_ingr` (`id`, `id_recipe`, `id_product`) VALUES
+	(1, 1, '3,4h'),
+	(6, 2, '5,6'),
+	(7, 3, '5,6');
+/*!40000 ALTER TABLE `Recipes_ingr` ENABLE KEYS */;
 
 
 -- Дамп структуры базы данных restouranes
@@ -49,14 +65,17 @@ CREATE TABLE IF NOT EXISTS `Restouranes` (
   `adress` varchar(50) DEFAULT NULL,
   `necessary_dish` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- Дамп данных таблицы restouranes.Restouranes: ~3 rows (приблизительно)
 /*!40000 ALTER TABLE `Restouranes` DISABLE KEYS */;
 INSERT INTO `Restouranes` (`id`, `name`, `description`, `price_category`, `adress`, `necessary_dish`) VALUES
 	(1, 'Curacuma', 'Chinesee', 'medium', 'Chinees str', 'Bread, Americano'),
 	(2, 'Pelmen\'', 'Russian', 'small', 'Russusan 1', 'Cake, Espresso'),
-	(3, 'Rest++', 'Rich bithc', 'big', 'street Arbat', 'Super Chicken, Good Chicken');
+	(3, 'Rest++', 'Rich bithc', 'big', 'street Arbat', 'Super Chicken, Good Chicken'),
+	(4, 'gdgdgbfhf', 'gdgdgbfhf', 'big', 'gdgdgbfhf', 'gdgdgbfhf'),
+	(5, 'dfsbmjh', 'dfsbmjh', 'big', 'dfsbmjh', 'dfsbmjh'),
+	(6, 'jftkhlji', 'jftkhlji', 'big', 'jftkhlji', 'jftkhlji');
 /*!40000 ALTER TABLE `Restouranes` ENABLE KEYS */;
 
 
@@ -71,20 +90,21 @@ CREATE TABLE IF NOT EXISTS `Product` (
   `name` varchar(50) DEFAULT NULL,
   `cost` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы shop.Product: ~9 rows (приблизительно)
+-- Дамп данных таблицы shop.Product: ~14 rows (приблизительно)
 /*!40000 ALTER TABLE `Product` DISABLE KEYS */;
 INSERT INTO `Product` (`id`, `name`, `cost`) VALUES
 	(1, 'Chicken', 5),
-	(2, 'Bread', 2),
+	(2, 'Bread', 3),
 	(3, 'Eggs', 2.5),
 	(4, 'Flour', 3),
 	(5, 'Coffee', 2),
 	(6, 'Water', 0.5),
 	(7, 'Sugar', 1),
 	(8, 'Milk', 2),
-	(9, 'Ananas', 10);
+	(9, 'Ananas', 10),
+	(13, 'Coffee 100kg', 100);
 /*!40000 ALTER TABLE `Product` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

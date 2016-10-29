@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div>
+    <div class="col-lg-8">
+        <h3 class="text-center text-success">Список товаров интернет магазина:</h3>
+        <table class="table table-striped table-bordered table-hover text-center">
+            <tr>
+                <th class="text-center">Наименование</th>
+                <th class="text-center">Стоимость</th>
+                <th class="text-center">Действие</th>
+            </tr>
+            <tr>
+                <td><input id="nameInput" placeholder="Name"></td>
+                <td><input id="costInput" placeholder="Cost"></td>
+                <td>
+                    <input type="button" class="btn btn-success" value="ADD" id="addBtn">
+                    <input type="button" class="btn btn-success" value="CANCEL" id="cancelBtn">
+                </td>
+            </tr>
+            <tbody id="products">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script src="js/Product.js"></script>
+</body>
+</html>

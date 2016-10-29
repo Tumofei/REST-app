@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Recipes</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="col-lg-6">
+    <h3 class="text-center text-success">Список рецептов:</h3>
+    <table class="table table-striped table-bordered table-hover text-center">
+        <tr>
+            <th class="text-center">Номер рецепта</th>
+            <th class="text-center">Название</th>
+            <th class="text-center">Действие</th>
+
+        </tr>
+        <tr>
+            <td><input id="IdInput" placeholder="Id"></td>
+            <td><input id="NameInput" placeholder="Name"></td>
+            <td>
+                <input type="button" class="btn btn-success" value="ADD" id="addBtn">
+                <input type="button" class="btn btn-success" value="CANCEL" id="cancelBtn">
+            </td>
+        </tr>
+        <tbody id="recipes">
+        </tbody>
+    </table>
+</div>
+<div class="col-lg-6">
+    <h3 class="text-center text-success">Список ингридиентов:</h3>
+    <table class="table table-striped table-bordered table-hover text-center">
+        <tr>
+            <th class="text-center">Номер рецепта</th>
+            <th class="text-center">Номер продукта</th>
+            <th class="text-center">Действие</th>
+
+        </tr>
+        <tr>
+            <td><input id="IdIngrInput" placeholder="Id"></td>
+            <td><input id="IdProductInput" placeholder="Id product"></td>
+            <td>
+                <input type="button" class="btn btn-success" value="ADD" id="addIngrBtn">
+                <input type="button" class="btn btn-success" value="CANCEL" id="cancelIngrBtn">
+            </td>
+        </tr>
+        <tbody id="recipes_ingr">
+        </tbody>
+    </table>
+</div>
+<script src="js/Recipe.js"></script>
+<script src="js/Recipe_ingr.js"></script>
+</body>
+</html>
