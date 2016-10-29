@@ -8,8 +8,8 @@
 
 var restaurantsItem = document.getElementById('restaurants');
 var restaurants = JSON.parse(getRest('restouranes', 'Restouranes')); //server answer
+var addBtn = document.getElementById('addBtn');
 restaurantsItem.addEventListener('click', actionChooser);
-
 addBtn.addEventListener('click', actionChooser);
 cancelBtn.addEventListener('click', tableRender);
 
@@ -159,7 +159,7 @@ function actionChooser(event) {
 }
 
 function tableRender () {
-    products = JSON.parse(getRest('restouranes', 'restouranes')); //server answer
+    restaurants = JSON.parse(getRest('restouranes', 'restouranes')); //server answer
 
     restaurantsItem.innerHTML = '';
     addBtn.value = 'ADD';
