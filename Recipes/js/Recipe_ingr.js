@@ -35,14 +35,14 @@ var recipes_ingr = JSON.parse(getRest('recipes', 'recipes_ingr')); //server answ
 var recipes_ingrElement = document.getElementById('recipes_ingr');
 var addIngrBtn = document.getElementById('addIngrBtn');
 
-recipes_ingrElement.addEventListener('click', actionChooser);
-addIngrBtn.addEventListener('click', actionChooser);
+recipes_ingrElement.addEventListener('click', actionIngrChooser);
+addIngrBtn.addEventListener('click', actionIngrChooser);
 cancelIngrBtn.addEventListener('click', tableRecipesIngrRender);
 
 
 
-putInTable(recipes_ingr);
-function putInTable(items) {
+putInIngrTable(recipes_ingr);
+function putInIngrTable(items) {
     for (var i = 0; i < items.valueOf().length; i++) {
         var tr = document.createElement('tr');
         var td1 = document.createElement('td');
@@ -72,7 +72,7 @@ function putInTable(items) {
         td3.appendChild(deleteBtn);
     }
 }
-function editAction(id) {
+function editIngrAction(id) {
     for (var i = 0; i < recipes_ingr.valueOf().length; i++) {
         if (recipes_ingr[i].id == id) {
             data = {
@@ -90,7 +90,7 @@ function editAction(id) {
     IdProductInput.value = data.id_product;
 }
 
-function addAction() {
+function addIngrAction() {
     data = {
         id_recipe: IdIngrInput.value,
         id_product: IdProductInput.value
@@ -99,7 +99,7 @@ function addAction() {
     postRest('recipes', 'recipes_ingr', data);
 }
 
-function updateAction() {
+function updateIngrAction() {
     data = {
         id: data.id,
         id_recipe: IdIngrInput.value,
@@ -110,7 +110,7 @@ function updateAction() {
     putRest('recipes', 'recipes_ingr', data, data.id);
 }
 
-function actionChooser(event) {
+function actionIngrChooser(event) {
     var id = event.target.id;
 
     if (event.target.className.indexOf('deleteBtn') + 1) {
@@ -118,15 +118,15 @@ function actionChooser(event) {
         tableRecipesIngrRender();
     }
     if (event.target.className.indexOf('editBtn') + 1) {
-        editAction(id);
+        editIngrAction(id);
 
     }
     if (event.target.id.indexOf('addIngrBtn') + 1) {
-        addAction();
+        addIngrAction();
         tableRecipesIngrRender();
     }
     if (event.target.id.indexOf('updateBtn') + 1) {
-        updateAction();
+        updateIngrAction();
         tableRecipesIngrRender();
     }
 
@@ -143,5 +143,5 @@ function tableRecipesIngrRender () {
     IdProductInput.value = '';
     data = {};
 
-    putInTable(recipes_ingr);
+    putInIngrTable(recipes_ingr);
 }

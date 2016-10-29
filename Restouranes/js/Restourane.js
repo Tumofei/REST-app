@@ -61,12 +61,12 @@ function putInTable(items) {
 
 
 
-        deleteBtn.className = 'btn btn-danger col-lg-4 col-lg-offset-1 deleteBtn';
+        deleteBtn.className = 'btn btn-danger col-lg-5 col-lg-offset-1 deleteBtn';
         deleteBtn.type = 'button';
         deleteBtn.value = 'Delete';
         deleteBtn.id = items[i].id;
 
-        editBtn.className = 'btn btn-danger col-lg-4 col-lg-offset-2 editBtn';
+        editBtn.className = 'btn btn-danger col-lg-5 col-lg-offset-1 editBtn';
         editBtn.type = 'button';
         editBtn.value = 'Edit';
         editBtn.id = items[i].id;
