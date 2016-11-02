@@ -4,8 +4,11 @@
 var recipes_ingr = JSON.parse(Rest.getRest('recipes', 'recipes_ingr')); //server answer
 var recipes_ingrElement = document.getElementById('recipes_ingr');
 var addIngrBtn = document.getElementById('addIngrBtn');
+var cancelIngrBtn = document.getElementById('cancelIngrBtn');
 var idIngridientsInput = document.getElementById('idIngridientsInput');
-var idProductInput = document.getElementById('idProductInput');
+var idProductInput = document.getElementById('idProductsInput');
+var recipes = JSON.parse(Rest.getRest('recipes', 'recipes'));
+var products = JSON.parse(Rest.getRest('shop', 'product'));
 
 recipes_ingrElement.addEventListener('click', actionIngrChooser);
 addIngrBtn.addEventListener('click', actionIngrChooser);
@@ -14,6 +17,26 @@ cancelIngrBtn.addEventListener('click', tableRecipesIngrRender);
 
 
 putInIngrTable(recipes_ingr);
+
+function  putInputs() {
+    for (var i = 0; i < recipes.valueOf().length; i++) {
+        var ingridientOption = document.createElement('option');
+
+        ingridientOption.value = recipes[i].id;
+        ingridientOption.innerHTML = recipes[i].id + ' : ' + recipes[i].name;
+
+        idIngridientsInput.appendChild(ingridientOption);
+    }
+    for (var j = 0; j < products.valueOf().length; j++) {
+        var productOption = document.createElement('option');
+
+        productOption.value = products[j].id;
+        productOption.innerHTML = products[j].id + ' : ' + products[j].name;
+
+        idProductInput.appendChild(productOption);
+    }
+}
+
 function putInIngrTable(items) {
     for (var i = 0; i < items.valueOf().length; i++) {
         var tr = document.createElement('tr');
@@ -43,7 +66,9 @@ function putInIngrTable(items) {
         td3.appendChild(editBtn);
         td3.appendChild(deleteBtn);
     }
+    putInputs();
 }
+
 function editIngrAction(id) {
     for (var i = 0; i < recipes_ingr.valueOf().length; i++) {
         if (recipes_ingr[i].id == id) {
@@ -113,6 +138,8 @@ function tableRecipesIngrRender () {
     addIngrBtn.id = 'addIngrBtn';
     idIngridientsInput.value = '';
     idProductInput.value = '';
+    idIngridientsInput.innerHTML = '';
+    idProductInput.innerHTML = '';
     data = {};
 
     putInIngrTable(recipes_ingr);

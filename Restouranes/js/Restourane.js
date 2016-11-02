@@ -1,50 +1,35 @@
-/**
- * Created by timox on 29.10.2016.
- */
-/**
- * Created by timox on 25.10.2016.
- */
-
-
 var restaurantsItem = document.getElementById('restaurants');
-var restaurants = JSON.parse(getRest('restouranes', 'Restouranes')); //server answer
+var restaurants = JSON.parse(Rest.getRest('restouranes', 'Restouranes')); //server answer
+var dish = JSON.parse(Rest.getRest('restouranes', 'dish'));
+var recipes = JSON.parse(Rest.getRest('recipes', 'recipes'));
+
 restaurantsItem.addEventListener('click', actionChooser);
+var addBtn = document.getElementById('addBtn');
+var cancelBtn = document.getElementById('cancelBtn');
 
 addBtn.addEventListener('click', actionChooser);
 cancelBtn.addEventListener('click', tableRender);
 
 putInTable(restaurants);
 
-function getRest(server, table) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('GET', 'http://rest/' + server + '/index.php/' + table, false);
-
-    xhr.send();
-
-    return xhr.responseText;
+function searchDishId(id) {
+    var name = [];
+    for (var i = 0; i < dish.valueOf().length; i++) {
+        if (id == dish[i].id_restourane) {
+            name.push(searchDishName(dish[i].id_recipe));
+        }
+    }
+    return name;
 }
 
-function deleteRest(server, table, id) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('DELETE', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
-    xhr.send();
+function searchDishName(id) {
+    for (var i = 0; i < recipes.valueOf().length; i++) {
+        if (id == recipes[i].id) {
+            return recipes[i].name;
+        }
+    }
 }
 
-function postRest(server, table, data) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('POST', 'http://rest/' + server + '/index.php/' + table, false);
-    xhr.send(JSON.stringify(data));
-}
-
-function putRest(server, table, data, id) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('PUT', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
-    xhr.send(JSON.stringify(data));
-}
 function putInTable(items) {
     for (var i = 0; i < items.valueOf().length; i++) {
         var td1 = document.createElement('td');
@@ -58,7 +43,6 @@ function putInTable(items) {
 
         var deleteBtn = document.createElement('input');
         var editBtn = document.createElement('input');
-
 
 
         deleteBtn.className = 'btn btn-danger col-lg-5 col-lg-offset-1 deleteBtn';
@@ -75,7 +59,8 @@ function putInTable(items) {
         td2.innerHTML = items[i].description;
         td3.innerHTML = items[i].price_category;
         td4.innerHTML = items[i].adress;
-        td5.innerHTML = items[i].necessary_dish;
+        //td5.innerHTML = items[i].necessary_dish;
+        td5.innerHTML = searchDishId(i + 1);
 
         restaurantsItem.appendChild(tr);
         tr.appendChild(td1);
@@ -84,8 +69,8 @@ function putInTable(items) {
         tr.appendChild(td4);
         tr.appendChild(td5);
         tr.appendChild(td6);
-        td6.appendChild(deleteBtn);
         td6.appendChild(editBtn);
+        td6.appendChild(deleteBtn);
     }
 }
 
@@ -117,11 +102,11 @@ function addAction() {
         name: nameInput.value,
         description: descriptionInput.value,
         price_category: costInput.value,
-        adress:adressInput.value,
-        necessary_dish:dishInput.value
+        adress: adressInput.value,
+        necessary_dish: dishInput.value
     };
 
-    postRest('restouranes', 'restouranes', data);
+    Rest.postRest('restouranes', 'restouranes', data);
 }
 
 function updateAction() {
@@ -130,18 +115,18 @@ function updateAction() {
         name: nameInput.value,
         description: descriptionInput.value,
         price_category: costInput.value,
-        adress:adressInput.value,
-        necessary_dish:dishInput.value
+        adress: adressInput.value,
+        necessary_dish: dishInput.value
     };
 
-    putRest('restouranes', 'restouranes', data, data.id);
+    Rest.putRest('restouranes', 'restouranes', data, data.id);
 }
 
 function actionChooser(event) {
     var id = event.target.id;
 
     if (event.target.className.indexOf('deleteBtn') + 1) {
-        deleteRest('restouranes', 'restouranes', id);
+        Rest.deleteRest('restouranes', 'restouranes', id);
         tableRender();
     }
     if (event.target.className.indexOf('editBtn') + 1) {
@@ -158,8 +143,8 @@ function actionChooser(event) {
 
 }
 
-function tableRender () {
-    restaurants = JSON.parse(getRest('restouranes', 'Restouranes')); //server answer
+function tableRender() {
+    restaurants = JSON.parse(Rest.getRest('restouranes', 'Restouranes')); //server answer
 
     restaurantsItem.innerHTML = '';
     addBtn.value = 'ADD';
@@ -173,4 +158,3 @@ function tableRender () {
 
     putInTable(restaurants);
 }
-
