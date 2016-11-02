@@ -1,39 +1,11 @@
 /**
  * Created by timox on 29.10.2016.
  */
-function getRest(server, table) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('GET', 'http://rest/' + server + '/index.php/' + table, false);
-    xhr.send();
-
-    return xhr.responseText;
-}
-
-function deleteRest(server, table, id) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('DELETE', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
-    xhr.send();
-}
-
-function postRest(server, table, data) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('POST', 'http://rest/' + server + '/index.php/' + table, false);
-    xhr.send(JSON.stringify(data));
-}
-
-function putRest(server, table, data, id) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('PUT', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
-    xhr.send(JSON.stringify(data));
-}
-
-var recipes_ingr = JSON.parse(getRest('recipes', 'recipes_ingr')); //server answer
+var recipes_ingr = JSON.parse(Rest.getRest('recipes', 'recipes_ingr')); //server answer
 var recipes_ingrElement = document.getElementById('recipes_ingr');
 var addIngrBtn = document.getElementById('addIngrBtn');
+var idIngridientsInput = document.getElementById('idIngridientsInput');
+var idProductInput = document.getElementById('idProductInput');
 
 recipes_ingrElement.addEventListener('click', actionIngrChooser);
 addIngrBtn.addEventListener('click', actionIngrChooser);
@@ -86,35 +58,35 @@ function editIngrAction(id) {
     }
     addIngrBtn.value = 'UPDATE';
     addIngrBtn.id = 'updateBtn';
-    IdIngrInput.value = data.id_recipe;
-    IdProductInput.value = data.id_product;
+    idIngridientsInput.id = id;
+    idIngridientsInput.value = data.id_recipe;
+    idProductInput.value = data.id_product;
 }
 
 function addIngrAction() {
     data = {
-        id_recipe: IdIngrInput.value,
-        id_product: IdProductInput.value
+        id_recipe: idIngridientsInput.value,
+        id_product: idProductInput.value
     };
-
-    postRest('recipes', 'recipes_ingr', data);
+    Rest.postRest('recipes', 'recipes_ingr', data);
 }
 
 function updateIngrAction() {
     data = {
         id: data.id,
-        id_recipe: IdIngrInput.value,
-        id_product: IdProductInput.value
+        id_recipe: idIngridientsInput.value,
+        id_product: idProductInput.value
 
     };
 
-    putRest('recipes', 'recipes_ingr', data, data.id);
+    Rest.putRest('recipes', 'recipes_ingr', data, idIngridientsInput.id);
 }
 
 function actionIngrChooser(event) {
     var id = event.target.id;
 
     if (event.target.className.indexOf('deleteBtn') + 1) {
-        deleteRest('recipes', 'recipes_ingr', id);
+        Rest.deleteRest('recipes', 'recipes_ingr', id);
         tableRecipesIngrRender();
     }
     if (event.target.className.indexOf('editBtn') + 1) {
@@ -135,12 +107,12 @@ function actionIngrChooser(event) {
 
 function tableRecipesIngrRender () {
 
-    recipes_ingr = JSON.parse(getRest('recipes', 'recipes_ingr'));
+    recipes_ingr = JSON.parse(Rest.getRest('recipes', 'recipes_ingr'));
     recipes_ingrElement.innerHTML = '';
     addIngrBtn.value = 'ADD';
     addIngrBtn.id = 'addIngrBtn';
-    IdIngrInput.value = '';
-    IdProductInput.value = '';
+    idIngridientsInput.value = '';
+    idProductInput.value = '';
     data = {};
 
     putInIngrTable(recipes_ingr);

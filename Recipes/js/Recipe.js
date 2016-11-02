@@ -1,41 +1,13 @@
 /**
  * Created by timox on 28.10.2016.
  */
-function getRest(server, table) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('GET', 'http://rest/' + server + '/index.php/' + table, false);
-    xhr.send();
-
-    return xhr.responseText;
-}
-
-function deleteRest(server, table, id) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('DELETE', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
-    xhr.send();
-}
-
-function postRest(server, table, data) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('POST', 'http://rest/' + server + '/index.php/' + table, false);
-    xhr.send(JSON.stringify(data));
-}
-
-function putRest(server, table, data, id) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('PUT', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
-    xhr.send(JSON.stringify(data));
-}
 
 
-var recipes = JSON.parse(getRest('recipes', 'recipes'));
+var recipes = JSON.parse(Rest.getRest('recipes', 'recipes'));
 
 var recipesElement = document.getElementById('recipes');
-
+var idInput = document.getElementById('idInput');
+var nameInput = document.getElementById('nameInput');
 
 var addBtn = document.getElementById('addBtn');
 
@@ -89,34 +61,40 @@ function editAction(id) {
     }
     addBtn.value = 'UPDATE';
     addBtn.id = 'updateBtn';
-    IdInput.value = data.id;
-    NameInput.value = data.name;
+    idInput.id = id;
+    idInput.value = data.id;
+    nameInput.value = data.name;
 }
 
 function addAction() {
-    data = {
-        id: IdInput.value,
-        name: NameInput.value
-    };
-
-    postRest('recipes', 'recipes', data);
+    if (idInput.value) {
+        data = {
+            id: idInput.value,
+            name: nameInput.value
+        };
+    } else {
+        data = {
+            name: nameInput.value
+        };
+    }
+    Rest.postRest('recipes', 'recipes', data)
 }
 
 function updateAction() {
     data = {
-        id: data.id,
-        name: NameInput.value
+        id: idInput.value,
+        name: nameInput.value
 
     };
 
-    putRest('recipes', 'recipes', data, data.id);
+    Rest.putRest('recipes', 'recipes', data, idInput.id);
 }
 
 function actionChooser(event) {
     var id = event.target.id;
 
     if (event.target.className.indexOf('deleteBtn') + 1) {
-        deleteRest('recipes', 'recipes', id);
+        Rest.deleteRest('recipes', 'recipes', id);
         tableRecipesRender();
     }
     if (event.target.className.indexOf('editBtn') + 1) {
@@ -137,12 +115,12 @@ function actionChooser(event) {
 
 function tableRecipesRender () {
 
-    recipes = JSON.parse(getRest('recipes', 'recipes'));
+    recipes = JSON.parse(Rest.getRest('recipes', 'recipes'));
     recipesElement.innerHTML = '';
     addBtn.value = 'ADD';
     addBtn.id = 'addBtn';
-    IdInput.value = '';
-    NameInput.value = '';
+    idInput.value = '';
+    nameInput.value = '';
     data = {};
 
     putInTable(recipes);
