@@ -159,7 +159,7 @@ function actionChooser(event) {
 }
 
 function tableRender () {
-    products = JSON.parse(getRest('restouranes', 'restouranes')); //server answer
+    restaurants = JSON.parse(getRest('restouranes', 'Restouranes')); //server answer
 
     restaurantsItem.innerHTML = '';
     addBtn.value = 'ADD';
