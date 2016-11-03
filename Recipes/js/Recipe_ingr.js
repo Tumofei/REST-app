@@ -8,7 +8,7 @@ var cancelIngrBtn = document.getElementById('cancelIngrBtn');
 var idIngridientsInput = document.getElementById('idIngridientsInput');
 var idProductInput = document.getElementById('idProductsInput');
 var recipes = JSON.parse(Rest.getRest('recipes', 'recipes'));
-var products = JSON.parse(Rest.getRest('shop', 'product'));
+var products = JSON.parse(Rest.getRest('recipes', 'product'));
 
 recipes_ingrElement.addEventListener('click', actionIngrChooser);
 addIngrBtn.addEventListener('click', actionIngrChooser);
