@@ -6,7 +6,7 @@ var product = JSON.parse(Rest.getRest('Recipes', 'product'));
 var productElement = document.getElementById('product');
 var idProductInput = document.getElementById('idProductInput');
 var nameProductInput = document.getElementById('nameProductInput');
-
+var cancelProductBtn = document.getElementById('cancelProductBtn');
 var addProductBtn = document.getElementById('addProductBtn');
 
 productElement.addEventListener('click', actionProductChooser);
@@ -23,12 +23,12 @@ function putInProductTable(items) {
         var deleteBtn = document.createElement('input');
         var editBtn = document.createElement('input');
 
-        deleteBtn.className = 'btn btn-danger col-lg-5  deleteBtn';
+        deleteBtn.className = 'btn btn-danger col-lg-5  deleteProductBtn';
         deleteBtn.type = 'button';
         deleteBtn.value = 'Delete';
         deleteBtn.id = items[i].id;
 
-        editBtn.className = 'btn btn-danger col-lg-5 col-lg-offset-1  editBtn';
+        editBtn.className = 'btn btn-danger col-lg-5 col-lg-offset-1  editProductBtn';
         editBtn.type = 'button';
         editBtn.value = 'Edit';
         editBtn.id = items[i].id;
@@ -58,7 +58,7 @@ function editProductAction(id) {
         }
     }
     addProductBtn.value = 'UPDATE';
-    addProductBtn.id = 'updateBtn';
+    addProductBtn.id = 'updateProductBtn';
     idProductInput.id = id;
     idProductInput.value = data.id;
     nameProductInput.value = data.name;
@@ -91,19 +91,19 @@ function updateProductAction() {
 function actionProductChooser(event) {
     var id = event.target.id;
 
-    if (event.target.className.indexOf('deleteBtn') + 1) {
+    if (event.target.className.indexOf('deleteProductBtn') + 1) {
         Rest.deleteRest('recipes', 'product', id);
         tableProductRender();
     }
-    if (event.target.className.indexOf('editBtn') + 1) {
+    if (event.target.className.indexOf('editProductBtn') + 1) {
         editProductAction(id);
 
     }
-    if (event.target.id.indexOf('addBtn') + 1) {
+    if (event.target.id.indexOf('addProductBtn') + 1) {
         addProductAction();
         tableProductRender();
     }
-    if (event.target.id.indexOf('updateBtn') + 1) {
+    if (event.target.id.indexOf('updateProductBtn') + 1) {
         updateProductAction();
         tableProductRender();
     }
@@ -116,7 +116,7 @@ function tableProductRender () {
     product = JSON.parse(Rest.getRest('recipes', 'product'));
     productElement.innerHTML = '';
     addProductBtn.value = 'ADD';
-    addProductBtn.id = 'addBtn';
+    addProductBtn.id = 'addProductBtn';
     idProductInput.value = '';
     nameProductInput.value = '';
     data = {};
