@@ -15,6 +15,25 @@ CREATE DATABASE IF NOT EXISTS `recipes` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `recipes`;
 
 
+-- Дамп структуры для таблица recipes.Product
+CREATE TABLE IF NOT EXISTS `Product` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы recipes.Product: ~1 rows (приблизительно)
+/*!40000 ALTER TABLE `Product` DISABLE KEYS */;
+INSERT INTO `Product` (`id`, `name`) VALUES
+	(1, 'Myka'),
+	(3, 'Sugar'),
+	(4, 'Water'),
+	(5, 'Coffee'),
+	(6, 'Solt'),
+	(7, 'Pepper'),
+	(8, 'Chiken');
+/*!40000 ALTER TABLE `Product` ENABLE KEYS */;
+
+
 -- Дамп структуры для таблица recipes.Recipes
 CREATE TABLE IF NOT EXISTS `Recipes` (
   `id` int(11) NOT NULL,
@@ -22,15 +41,14 @@ CREATE TABLE IF NOT EXISTS `Recipes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы recipes.Recipes: ~6 rows (приблизительно)
+-- Дамп данных таблицы recipes.Recipes: ~7 rows (приблизительно)
 /*!40000 ALTER TABLE `Recipes` DISABLE KEYS */;
 INSERT INTO `Recipes` (`id`, `name`) VALUES
 	(1, 'Breads'),
 	(3, 'Good Chicken'),
 	(4, 'Cake'),
 	(5, 'Espresso'),
-	(6, 'Super Chicken'),
-	(44, '44545');
+	(6, 'Super Chicken');
 /*!40000 ALTER TABLE `Recipes` ENABLE KEYS */;
 
 
@@ -40,20 +58,47 @@ CREATE TABLE IF NOT EXISTS `Recipes_ingr` (
   `id_recipe` int(11) DEFAULT NULL,
   `id_product` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы recipes.Recipes_ingr: ~0 rows (приблизительно)
+-- Дамп данных таблицы recipes.Recipes_ingr: ~4 rows (приблизительно)
 /*!40000 ALTER TABLE `Recipes_ingr` DISABLE KEYS */;
 INSERT INTO `Recipes_ingr` (`id`, `id_recipe`, `id_product`) VALUES
-	(1, 1, '3,4h'),
-	(6, 2, '5,6'),
-	(7, 3, '5,6');
+	(17, 1, '1'),
+	(18, 1, '3'),
+	(20, 2, '2'),
+	(21, 5, '4'),
+	(22, 5, '3'),
+	(23, 5, '5'),
+	(24, 3, '1'),
+	(27, 3, '4'),
+	(28, 3, '6'),
+	(29, 3, '7'),
+	(30, 3, '8');
 /*!40000 ALTER TABLE `Recipes_ingr` ENABLE KEYS */;
 
 
 -- Дамп структуры базы данных restouranes
 CREATE DATABASE IF NOT EXISTS `restouranes` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `restouranes`;
+
+
+-- Дамп структуры для таблица restouranes.Dish
+CREATE TABLE IF NOT EXISTS `Dish` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_restouranes` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `id_recipes` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы restouranes.Dish: ~4 rows (приблизительно)
+/*!40000 ALTER TABLE `Dish` DISABLE KEYS */;
+INSERT INTO `Dish` (`id`, `id_restouranes`, `name`, `id_recipes`) VALUES
+	(1, 1, 'Bread', 1),
+	(2, 2, 'Cake', 4),
+	(3, 5, 'Espresso', 5),
+	(4, 1, 'Chikens', 3);
+/*!40000 ALTER TABLE `Dish` ENABLE KEYS */;
 
 
 -- Дамп структуры для таблица restouranes.Restouranes
@@ -63,19 +108,15 @@ CREATE TABLE IF NOT EXISTS `Restouranes` (
   `description` varchar(50) DEFAULT NULL,
   `price_category` enum('small','medium','big') DEFAULT NULL,
   `adress` varchar(50) DEFAULT NULL,
-  `necessary_dish` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- Дамп данных таблицы restouranes.Restouranes: ~3 rows (приблизительно)
 /*!40000 ALTER TABLE `Restouranes` DISABLE KEYS */;
-INSERT INTO `Restouranes` (`id`, `name`, `description`, `price_category`, `adress`, `necessary_dish`) VALUES
-	(1, 'Curacuma', 'Chinesee', 'medium', 'Chinees str', 'Bread, Americano'),
-	(2, 'Pelmen\'', 'Russian', 'small', 'Russusan 1', 'Cake, Espresso'),
-	(3, 'Rest++', 'Rich bithc', 'big', 'street Arbat', 'Super Chicken, Good Chicken'),
-	(4, 'gdgdgbfhf', 'gdgdgbfhf', 'big', 'gdgdgbfhf', 'gdgdgbfhf'),
-	(5, 'dfsbmjh', 'dfsbmjh', 'big', 'dfsbmjh', 'dfsbmjh'),
-	(6, 'jftkhlji', 'jftkhlji', 'big', 'jftkhlji', 'jftkhlji');
+INSERT INTO `Restouranes` (`id`, `name`, `description`, `price_category`, `adress`) VALUES
+	(1, 'Curacuma', 'Chinesee', 'medium', 'Chinees str'),
+	(2, 'Pelmen\'', 'Russian', 'small', 'Russusan 1'),
+	(5, 'small', 'small', 'small', 'small');
 /*!40000 ALTER TABLE `Restouranes` ENABLE KEYS */;
 
 
@@ -90,9 +131,9 @@ CREATE TABLE IF NOT EXISTS `Product` (
   `name` varchar(50) DEFAULT NULL,
   `cost` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы shop.Product: ~14 rows (приблизительно)
+-- Дамп данных таблицы shop.Product: ~10 rows (приблизительно)
 /*!40000 ALTER TABLE `Product` DISABLE KEYS */;
 INSERT INTO `Product` (`id`, `name`, `cost`) VALUES
 	(1, 'Chicken', 5),
