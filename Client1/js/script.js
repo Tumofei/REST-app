@@ -11,19 +11,19 @@ var cartElement = document.getElementById('cart');
 var cartCostElement = document.getElementById('cartCost');
 var cartRecipes = [];
 var recipesElement = document.getElementById('recipes');
-var addBtn = document.getElementById('addBtn');
-var cancelBtn = document.getElementById('cancelBtn');
-var nameInput = document.getElementById('nameInput');
-var costInput = document.getElementById('costInput');
+//var addBtn = document.getElementById('addBtn');
+//var cancelBtn = document.getElementById('cancelBtn');
+//var nameInput = document.getElementById('nameInput');
+//var costInput = document.getElementById('costInput');
 var data = {};
 
 productsElement.addEventListener('click', actionChooser);
 cartElement.addEventListener('click', actionChooser);
-addBtn.addEventListener('click', actionChooser);
-cancelBtn.addEventListener('click', tableRender);
+//addBtn.addEventListener('click', actionChooser);
+//cancelBtn.addEventListener('click', tableRender);
 
 var products = JSON.parse(getRest(shopServer, shopTable)); //server answer
-var recipes = JSON.parse(getRest('recipes', 'dish'));
+var recipes = JSON.parse(getRest('recipes', 'recipes_ingr'));
 
 putInTable(products);
 
@@ -36,7 +36,7 @@ function getRest(server, table) {
     return xhr.responseText;
 }
 
-function deleteRest(server, table, id) {
+/*function deleteRest(server, table, id) {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
     xhr.open('DELETE', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
@@ -55,7 +55,7 @@ function putRest(server, table, data, id) {
     xhr.withCredentials = true;
     xhr.open('PUT', 'http://rest/' + server + '/index.php/' + table + '/' + id, false);
     xhr.send(JSON.stringify(data));
-}
+}*/
 
 function putInTable(items) {
     for (var i = 0; i < items.valueOf().length; i++) {
@@ -63,16 +63,20 @@ function putInTable(items) {
         var td1 = document.createElement('td');
         var td2 = document.createElement('td');
         var td3 = document.createElement('td');
+        var td4 = document.createElement('td');
         var addToCartBtn = document.createElement('input');
-        var deleteBtn = document.createElement('input');
-        var editBtn = document.createElement('input');
+        var countItem = document.createElement('input');
+        countItem.setAttribute('id', 'value');
+        //var deleteBtn = document.createElement('input');
+        //var editBtn = document.createElement('input');
 
-        addToCartBtn.className = 'btn btn-success col-lg-3 cartBtn';
+        addToCartBtn.className = 'btn btn-success col-lg-8 cartBtn';
         addToCartBtn.type = 'button';
         addToCartBtn.value = 'To cart';
         addToCartBtn.id = items[i].id;
 
-        deleteBtn.className = 'btn btn-danger col-lg-3 col-lg-offset-1 deleteBtn';
+
+        /*deleteBtn.className = 'btn btn-danger col-lg-3 col-lg-offset-1 deleteBtn';
         deleteBtn.type = 'button';
         deleteBtn.value = 'Delete';
         deleteBtn.id = items[i].id;
@@ -80,7 +84,7 @@ function putInTable(items) {
         editBtn.className = 'btn btn-danger col-lg-3 col-lg-offset-1 editBtn';
         editBtn.type = 'button';
         editBtn.value = 'Edit';
-        editBtn.id = items[i].id;
+        editBtn.id = items[i].id;*/
 
         td1.innerHTML = items[i].name;
         td2.innerHTML = items[i].cost;
@@ -89,9 +93,11 @@ function putInTable(items) {
         tr.appendChild(td1);
         tr.appendChild(td2);
         tr.appendChild(td3);
-        td3.appendChild(addToCartBtn);
-        td3.appendChild(editBtn);
-        td3.appendChild(deleteBtn);
+        tr.appendChild(td4);
+        td3.appendChild(countItem);
+        td4.appendChild(addToCartBtn);
+        //td3.appendChild(editBtn);
+        //td3.appendChild(deleteBtn);
     }
 }
 
@@ -112,7 +118,7 @@ function outCartAction(id) {
     }
 }
 
-function editAction(id) {
+/*function editAction(id) {
     for (var i = 0; i < products.valueOf().length; i++) {
         if (products[i].id == id) {
             data = {
@@ -147,7 +153,7 @@ function updateAction() {
 
     putRest(shopServer, shopTable, data, data.id);
 }
-
+*/
 function actionChooser(event) {
     var id = event.target.id;
     if (event.target.className.indexOf('cartBtn') + 1) {
@@ -156,7 +162,7 @@ function actionChooser(event) {
     if (event.target.tagName === 'SPAN') {
         outCartAction(id);
     }
-    if (event.target.className.indexOf('deleteBtn') + 1) {
+    /*if (event.target.className.indexOf('deleteBtn') + 1) {
         deleteRest(shopServer, shopTable, id);
         tableRender();
     }
@@ -170,7 +176,7 @@ function actionChooser(event) {
     if (event.target.id.indexOf('updateBtn') + 1) {
         updateAction();
         tableRender();
-    }
+    }*/
 
     cartRender();
     recipeRender();
@@ -186,7 +192,7 @@ function cartRender () {
         span.className = 'text-info';
         span.innerHTML = span.innerHTML + cart[i].name + ';'+'</br>';
         cartElement.appendChild(span);
-        cost += +cart[i].cost;
+        cost += +cart[i].cost * document.getElementById('value');
         cartCostElement.innerHTML = 'Сумма к оплате: ' + cost + '$';
     }
 }
