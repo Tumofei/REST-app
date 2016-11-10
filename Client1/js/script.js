@@ -126,16 +126,35 @@ function recipeRender () {
 
 function findRecipes () {
     cartRecipes = [];
-    for (var i = 0; i < recipes.valueOf().length; i++) {
-        var ingridients = recipes[i].ingridients.split(', ');
-        for (var j = 0; j < cart.length; j++){
-            var index = ingridients.indexOf(cart[j].name);
-            if (index >= 0) {
-                ingridients.splice(index, 1);
-            }
-        }
-        if (ingridients == 0) {
-            cartRecipes.push(recipes[i]);
-        }
-    }
+    //for (var i = 0; i < recipes.valueOf().length; i++) {
+    //    var ingridients = recipes[i].ingridients.split(', ');
+    //    for (var j = 0; j < cart.length; j++){
+    //        var index = ingridients.indexOf(cart[j].name);
+    //        if (index >= 0) {
+    //            ingridients.splice(index, 1);
+    //        }
+    //    }
+    //    if (ingridients == 0) {
+    //        cartRecipes.push(recipes[i]);
+    //    }
+    //}
+    //for (var i = 0; i < cart.valueOf().length; i++) {
+    //    var ind = products
+    //    if (ind >= 0)
+    //}
+
+    //for (var a = 0; a < recipes_ingr.valueOf().length; a++) {
+    //    var index = recipes_ingr[a].id_recipe.indexOf(id_recipes);
+    //    if (index >= 0) {
+    //        for (var i =0; i < product.valueOf().length; i++ ) {
+    //            var ind = product[i].id.indexOf(recipes_ingr[a].id_product);
+    //            if (ind >= 0) {
+    //                var span = document.createElement('span');
+    //                span.className = 'text-info';
+    //                span.innerHTML = span.innerHTML + '</br>' + product[i].name + ';';
+    //                productsElement.appendChild(span);
+    //            }
+    //        }
+    //    }
+    //}
 }

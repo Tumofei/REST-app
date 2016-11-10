@@ -103,10 +103,7 @@ function showProducts() {
                       span.innerHTML = span.innerHTML + '</br>' + product[i].name + ';';
                       productsElement.appendChild(span);
                   }
-
               }
           }
-
     }
-
 }
