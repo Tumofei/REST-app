@@ -9,12 +9,13 @@ var productsElement = document.getElementById('products');
 var cart = [];
 var cartElement = document.getElementById('cart');
 var cartCostElement = document.getElementById('cartCost');
-//var cartRecipes = [];
+var cartRecipes = [];
 var recipesElement = document.getElementById('recipes');
 var data = {};
 
 productsElement.addEventListener('click', actionChooser);
 cartElement.addEventListener('click', actionChooser);
+//cartElement.addEventListener('mouseover', findRecipes);
 
 var products = JSON.parse(getRest(shopServer, shopTable)); //server answer
 var recipes_name =  JSON.parse(getRest('recipes', 'recipes'));
@@ -71,6 +72,8 @@ function toCartAction(id) {
             var valueElement = document.getElementById('value' + id);
             if (valueElement.value){
                 cart[cart.length - 1].value = valueElement.value;
+            } else {
+                cart[cart.length - 1].value = 1;
             }
         }
     }
@@ -91,11 +94,10 @@ function actionChooser(event) {
         toCartAction(id);
     }
     if (event.target.tagName === 'SPAN') {
-        findRecipes(id);
+        outCartAction(id);
     }
-
+    findRecipes();
     cartRender();
-
 }
 
 function cartRender () {
@@ -113,63 +115,50 @@ function cartRender () {
     }
 }
 
-/*function recipeRender () {
+function recipeRender () {
     findRecipes();
 
     recipesElement.innerHTML = 'Найденные рецепты блюд: </br>';
-    /*for (var i = 0; i < cartRecipes.length; i++) {
+    for (var i = 0; i < cartRecipes.length; i++) {
         var span = document.createElement('span');
         var ingridients = cartRecipes[i].ingridients.split(', ');
         //ingridients.join(' + ');
         span.innerHTML = '</br>' + ingridients.join(' + ') + ' = ' + cartRecipes[i].name + '</br>';
         recipesElement.appendChild(span);
     }
-}*/
+}
 
-function findRecipes (id) {
-    recipesElement.innerHTML = 'Найденные рецепты блюд: </br>';
-    var findIdRecipes = [];
-    for (var a = 0; a < recipes.valueOf().length; a++) {
-        var index = recipes[a].id_product.indexOf(id);
-        if (index >= 0) {
-            findIdRecipes.push(recipes[a].id_recipe);
-        }
-    }
-    for (var i = 0; i < recipes_name.valueOf().length; i++) {
-        for (var  x = 0; x < findIdRecipes.valueOf().length; x++) {
-            var ind = recipes_name[i].id.indexOf(findIdRecipes[x]);
-            if (ind >= 0) {
-                //console.log(recipes_name[i].name);
-                var span = document.createElement('span');
-
-                span.className = 'text-info';
-                span.innerHTML = span.innerHTML + '</br>' + recipes_name[i].name + ';';
-                recipesElement.appendChild(span);
+function findRecipes () {
+    var tmpRecipes = JSON.parse(getRest('recipes', 'recipes_ingr'));
+    var needProducts;
+    for (var i = 0; i < cart.valueOf().length; i++) {
+        for (var j = 0; j < tmpRecipes.valueOf().length; j++) {
+            if (cart[i].id == tmpRecipes[j].id_product) {
+                needProducts = productFinder(tmpRecipes[j].id_recipe, tmpRecipes);
+                for (var k = 0; k < cart.valueOf().length; k++) {
+                    var idx = needProducts.indexOf(cart[k].id);
+                    if (idx >= 0) {
+                        needProducts.splice(idx, 1);
+                    }
+                    if (needProducts.length == 0) {
+                        console.log(recipes[j].id_recipe);
+                    }
+                }
             }
         }
-
-
 
     }
 }
 
-
-
-
-
-
-    /*var inde = recipes[a].id_recipe.indexOf(id_recipes);
-      if (inde >= 0) {
-         for (var i =0; i < product.valueOf().length; i++ ) {
-            var ind = product[i].id.indexOf(recipes[a].id_product);
-               if (ind >= 0) {
-                 var span = document.createElement('span');
-                 span.className = 'text-info';
-                 span.innerHTML = span.innerHTML + '</br>' + product[i].name + ';';
-                 recipesElement.appendChild(span);
-          }
-      }
-  }*/
-
-
-
+function productFinder(id, tmpRecipes) {
+    var needProducts = [];
+    for (var i = 0; i < tmpRecipes.valueOf().length; i++) {
+        var idx = tmpRecipes[i].id_recipe.indexOf(id);
+        if (idx >= 0) {
+            needProducts.push(tmpRecipes[i].id_product);
+            tmpRecipes.splice(i, 1);
+            i--;
+        }
+    }
+    return needProducts;
+}
