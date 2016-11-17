@@ -96,11 +96,16 @@ function actionChooser(event) {
     if (event.target.tagName === 'SPAN') {
         outCartAction(id);
     }
-    findRecipes();
+    //findRecipes();
+    recipeRender();
     cartRender();
 }
 
 function cartRender () {
+    if (cart.length != 0){
+        sortCart(cart);
+    }
+
     cartElement.innerHTML = 'Список добавленных продуктов: </br>';
     cartCostElement.innerHTML = '';
     var cost = 0;
@@ -116,32 +121,45 @@ function cartRender () {
 }
 
 function recipeRender () {
+    var tmpRecipes = JSON.parse(getRest('recipes', 'recipes_ingr'));
+    cartRecipes = [];
     findRecipes();
 
     recipesElement.innerHTML = 'Найденные рецепты блюд: </br>';
     for (var i = 0; i < cartRecipes.length; i++) {
         var span = document.createElement('span');
-        var ingridients = cartRecipes[i].ingridients.split(', ');
-        //ingridients.join(' + ');
-        span.innerHTML = '</br>' + ingridients.join(' + ') + ' = ' + cartRecipes[i].name + '</br>';
+        var needProducts = productFinder(cartRecipes[i].id, tmpRecipes).products;
+        for (var j = 0; j < product.valueOf().length; j++) {
+            var idx = needProducts.indexOf(product[j].id);
+            if (idx >= 0) {
+                needProducts[idx] = product[j].name;
+            }
+        }
+        span.innerHTML = '</br>' + needProducts.join(' + ') + ' = ' + cartRecipes[i].name + '</br>';
         recipesElement.appendChild(span);
     }
 }
 
 function findRecipes () {
     var tmpRecipes = JSON.parse(getRest('recipes', 'recipes_ingr'));
-    var needProducts;
+    var needProducts = {};
+    needProducts.products = [];
     for (var i = 0; i < cart.valueOf().length; i++) {
         for (var j = 0; j < tmpRecipes.valueOf().length; j++) {
             if (cart[i].id == tmpRecipes[j].id_product) {
+                if (+cart[i].value < +tmpRecipes[j].value) {
+                    break;
+                }
                 needProducts = productFinder(tmpRecipes[j].id_recipe, tmpRecipes);
                 for (var k = 0; k < cart.valueOf().length; k++) {
-                    var idx = needProducts.indexOf(cart[k].id);
+                    var idx = needProducts.products.indexOf(cart[k].id);
                     if (idx >= 0) {
-                        needProducts.splice(idx, 1);
+                        needProducts.products.splice(idx, 1);
                     }
-                    if (needProducts.length == 0) {
-                        console.log(recipes[j].id_recipe);
+                    if (needProducts.products.length == 0) {
+                        cartRecipes.push(recipeFinder(needProducts.id));
+                        //console.log(recipeFinder(needProducts.id));
+                        break;
                     }
                 }
             }
@@ -151,14 +169,45 @@ function findRecipes () {
 }
 
 function productFinder(id, tmpRecipes) {
-    var needProducts = [];
+    var needProducts = {};
+    needProducts.products = [];
+    needProducts.id = id;
     for (var i = 0; i < tmpRecipes.valueOf().length; i++) {
         var idx = tmpRecipes[i].id_recipe.indexOf(id);
         if (idx >= 0) {
-            needProducts.push(tmpRecipes[i].id_product);
+            needProducts.products.push(tmpRecipes[i].id_product);
             tmpRecipes.splice(i, 1);
             i--;
         }
     }
     return needProducts;
+}
+
+function recipeFinder (id) {
+    for (var i = 0; i < recipes_name.valueOf().length; i++) {
+        var idx = id.indexOf(recipes_name[i].id);
+        if (idx >= 0) {
+            return recipes_name[i];
+        }
+    }
+}
+
+function compareId(objectA, objectB) {
+    return objectA.id - objectB.id;
+}
+
+function sortCart(arr) {
+    arr.sort(compareId);
+    joinArr(arr);
+}
+
+function joinArr(arr) {
+    var outArray = arr;
+    for (var i = 0; i < outArray.valueOf().length - 1; i++) {
+        if (outArray[i].id == outArray[i + 1].id) {
+            outArray[i].value = parseInt(outArray[i].value) + parseInt(outArray[i + 1].value);
+            outArray.splice(i + 1, 1);
+        }
+    }
+    cart = outArray;
 }

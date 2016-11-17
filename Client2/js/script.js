@@ -139,7 +139,7 @@ function sortNecessary_ingr(arr) {
 
 function joinArr(arr) {
     var outArray = arr;
-    for (i = 0; i < outArray.valueOf().length - 1; i++) {
+    for (var i = 0; i < outArray.valueOf().length - 1; i++) {
         if (outArray[i].id == outArray[i + 1].id) {
             outArray[i].value = parseInt(outArray[i].value) + parseInt(outArray[i + 1].value);
             outArray.splice(i + 1, 1);
